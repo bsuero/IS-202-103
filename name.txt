@@ -32,7 +32,7 @@ name
 30.
 31.
 32.
-33. git add <name.txt> 
+33. Kaylee Zepeda
 34.
 
 
