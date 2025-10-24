@@ -3,6 +3,8 @@
   }
 
   function isNumericPalindrome(input) {
+    // Ensure input is treated as a string and remove any non-digit characters
+    const cleaned = String(input).replace(/\D+/g, '');
     if (cleaned.length === 0) return { valid: false, reason: 'no digits', cleaned };
 
     let i = 0, j = cleaned.length - 1;
