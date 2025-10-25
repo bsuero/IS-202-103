@@ -3,7 +3,7 @@ function reverseString(str) {
 }
 
 function isNumericPalindrome(input) {
-  const cleaned = String(input || '').replace(/\D+/g, '');
+  const cleaned = String(input).replace(/\D+/g, '');
   if (cleaned.length === 0) return { valid: false, reason: 'no digits', cleaned };
 
   let i = 0, j = cleaned.length - 1;
@@ -25,86 +25,71 @@ function calculateTip(subtotal, tipPercent) {
   return { ok: true, subtotal: Math.round(s * 100) / 100, tipPercent: p, tipAmount, total };
 }
 
-// Helper to safely get element
-function $id(id) {
-  return document.getElementById(id) || null;
-}
+const reverseForm = document.getElementById('reverse-form');
+const reverseInput = document.getElementById('reverse-input');
+const reverseOutput = document.getElementById('reverse-output');
+const reverseClearBtn = document.getElementById('reverse-clear');
 
-// Wire up UI only if elements exist (prevents errors if script runs early)
-const reverseForm = $id('reverse-form');
-const reverseInput = $id('reverse-input');
-const reverseOutput = $id('reverse-output');
-const reverseClearBtn = $id('reverse-clear');
+reverseForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const value = reverseInput.value;
+  if (value.trim() === '') {
+    reverseOutput.textContent = 'Please enter a string.';
+    return;
+  }
+  reverseOutput.textContent = reverseString(value);
+});
 
-if (reverseForm && reverseInput && reverseOutput) {
-  reverseForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const value = reverseInput.value || '';
-    if (value.trim() === '') {
-      reverseOutput.textContent = 'Please enter a string.';
-      return;
-    }
-    reverseOutput.textContent = reverseString(value);
-  });
-}
-if (reverseClearBtn && reverseInput && reverseOutput) {
-  reverseClearBtn.addEventListener('click', () => {
-    reverseInput.value = '';
-    reverseOutput.textContent = '';
-  });
-}
+reverseClearBtn.addEventListener('click', () => {
+  reverseInput.value = '';
+  reverseOutput.textContent = '';
+});
 
-const palForm = $id('palindrome-form');
-const palInput = $id('palindrome-input');
-const palOutput = $id('palindrome-output');
-const palClearBtn = $id('palindrome-clear');
+const palForm = document.getElementById('palindrome-form');
+const palInput = document.getElementById('palindrome-input');
+const palOutput = document.getElementById('palindrome-output');
+const palClearBtn = document.getElementById('palindrome-clear');
 
-if (palForm && palInput && palOutput) {
-  palForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const res = isNumericPalindrome(palInput.value);
-    if (!res.valid) {
-      palOutput.textContent = 'Please enter at least one digit.';
-      return;
-    }
-    if (res.palindrome) {
-      palOutput.textContent = `Yes — \"${res.cleaned}\" is a palindrome.`;
-    } else {
-      palOutput.textContent = `No — \"${res.cleaned}\" is not a palindrome.`;
-    }
-  });
-}
-if (palClearBtn && palInput && palOutput) {
-  palClearBtn.addEventListener('click', () => {
-    palInput.value = '';
-    palOutput.textContent = '';
-  });
-}
+palForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const res = isNumericPalindrome(palInput.value);
+  if (!res.valid) {
+    palOutput.textContent = 'Please enter at least one digit.';
+    return;
+  }
+  if (res.palindrome) {
+    palOutput.textContent = `Yes — "${res.cleaned}" is a palindrome.`;
+  } else {
+    palOutput.textContent = `No — "${res.cleaned}" is not a palindrome.`;
+  }
+});
 
-const tipForm = $id('tip-form');
-const subtotalInput = $id('subtotal-input');
-const tipPercentInput = $id('tip-percent-input');
-const tipOutput = $id('tip-output');
-const tipClearBtn = $id('tip-clear');
+palClearBtn.addEventListener('click', () => {
+  palInput.value = '';
+  palOutput.textContent = '';
+});
 
-if (tipForm && subtotalInput && tipPercentInput && tipOutput) {
-  tipForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const res = calculateTip(subtotalInput.value, tipPercentInput.value);
-    if (!res.ok) {
-      tipOutput.textContent = `Error: ${res.reason}`;
-      return;
-    }
-    tipOutput.innerHTML =
-      `Subtotal: $${res.subtotal.toFixed(2)}<br>` +
-      `Tip (${res.tipPercent}%): $${res.tipAmount.toFixed(2)}<br>` +
-      `<strong>Total: $${res.total.toFixed(2)}</strong>`;
-  });
-}
-if (tipClearBtn && subtotalInput && tipPercentInput && tipOutput) {
-  tipClearBtn.addEventListener('click', () => {
-    subtotalInput.value = '';
-    tipPercentInput.value = '';
-    tipOutput.textContent = '';
-  });
-}
+const tipForm = document.getElementById('tip-form');
+const subtotalInput = document.getElementById('subtotal-input');
+const tipPercentInput = document.getElementById('tip-percent-input');
+const tipOutput = document.getElementById('tip-output');
+const tipClearBtn = document.getElementById('tip-clear');
+
+tipForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const res = calculateTip(subtotalInput.value, tipPercentInput.value);
+  if (!res.ok) {
+    tipOutput.textContent = `Error: ${res.reason}`;
+    return;
+  }
+  tipOutput.innerHTML =
+    `Subtotal: $${res.subtotal.toFixed(2)}<br>` +
+    `Tip (${res.tipPercent}%): $${res.tipAmount.toFixed(2)}<br>` +
+    `<strong>Total: $${res.total.toFixed(2)}</strong>`;
+});
+
+tipClearBtn.addEventListener('click', () => {
+  subtotalInput.value = '';
+  tipPercentInput.value = '';
+  tipOutput.textContent = '';
+});
