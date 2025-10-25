@@ -7,8 +7,8 @@ function isNumericPalindrome(input) {
   if (cleaned.length === 0) return { valid: false, reason: 'no digits', cleaned };
 
   let i = 0, j = cleaned.length - 1;
-  while (i < j) {i
-    if (cleaned[i] !== cleaned[j]) return { vald: true, palindrome: false, cleaned };
+  while (i < j) {
+    if (cleaned[i] !== cleaned[j]) return { valid: true, palindrome: false, cleaned };
     i++; j--;
   }
   return { valid: true, palindrome: true, cleaned };
